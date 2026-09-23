@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>International Hiring Framework — 80,000 Hours</title>
+<style>
+:root{
+  --bg:#FFFFFF; --bg-2:#F4F6F7; --panel:#FFFFFF; --panel-hi:#FFFFFF;
+  --border:rgba(43,46,48,0.12); --border-hi:rgba(95,187,206,0.55);
+  --text:#2B2E30; --muted:rgba(43,46,48,0.62); --muted-soft:rgba(43,46,48,0.82);
+  --accent:#5FBBCE; --accent-soft:rgba(95,187,206,0.12); --accent-dim:#4B90A0;
+  --tier-active:#3E8E52; --tier-active-bg:rgba(95,168,95,0.15);
+  --tier-test:#A57F3B; --tier-test-bg:rgba(165,127,59,0.15);
+  --tier-future:#6B6E70; --tier-future-bg:rgba(161,162,162,0.22);
+  --code-bg:rgba(161,162,162,0.16);
+  --shadow:0 1px 2px rgba(43,46,48,.06), 0 8px 24px -12px rgba(43,46,48,.16);
+  --shadow-sm:0 1px 3px rgba(43,46,48,.08);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{
+  margin:0; background:
+    radial-gradient(900px 420px at 12% -8%, rgba(95,187,206,.08), transparent 60%),
+    radial-gradient(700px 380px at 100% 0%, rgba(165,127,59,.05), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 56px;}
+header.top{
+  padding:22px 16px calc(20px + env(safe-area-inset-top,0px));
+  background:linear-gradient(180deg, rgba(95,187,206,.10), transparent 90%);
+  border-bottom:1px solid var(--border);
+}
+header.top .eyebrow{
+  display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent-dim);margin-bottom:6px;
+}
+h1{font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em;font-weight:800;color:var(--accent);}
+.sub{color:var(--muted-soft);font-size:.94rem;margin:0;max-width:60ch;}
+nav.tabs{
+  display:flex;gap:4px;flex-wrap:wrap;margin:20px 0 22px;
+  background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:5px;
+}
+nav.tabs button{
+  background:none;border:none;color:var(--muted);font-size:.88rem;padding:9px 14px;cursor:pointer;
+  border-radius:8px;font-weight:600;transition:color .15s ease, background .15s ease;flex:1;min-width:fit-content;
+}
+nav.tabs button:hover{color:var(--text);}
+nav.tabs button.active{color:var(--text);background:var(--accent);box-shadow:var(--shadow-sm);font-weight:700;}
+section.panel{display:none;animation:fadeIn .25s ease;}
+section.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:16px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.card h2{font-size:1.12rem;margin:0 0 10px;font-weight:700;letter-spacing:-.005em;color:var(--accent);}
+.card h3{font-size:.95rem;margin:16px 0 8px;color:var(--accent);font-weight:700;}
+p{margin:0 0 11px;font-size:.94rem;color:var(--muted-soft);}
+p strong{color:var(--text);}
+ul{margin:0 0 11px;padding-left:0;font-size:.94rem;list-style:none;}
+li{margin-bottom:9px;color:var(--muted-soft);padding-left:22px;position:relative;}
+li::before{
+  content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+}
+li strong{color:var(--text);}
+.layer-tag{
+  display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  background:var(--accent-soft);color:var(--accent-dim);border-radius:20px;padding:5px 12px 5px 5px;margin-bottom:12px;
+  border:1px solid var(--border-hi);
+}
+.layer-tag .num{
+  display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--accent);color:#FFFFFF;font-size:.68rem;font-weight:800;
+}
+.card.layer-1{border-left:3px solid var(--tier-active);}
+.card.layer-2{border-left:3px solid var(--tier-test);}
+.card.layer-3{border-left:3px solid var(--tier-future);}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
+.chip{
+  background:var(--panel);border:1px solid var(--border);color:var(--muted-soft);border-radius:20px;
+  padding:7px 14px;font-size:.83rem;cursor:pointer;font-weight:600;transition:all .15s ease;
+}
+.chip:hover{border-color:var(--border-hi);color:var(--text);}
+.chip.active{background:var(--accent);border-color:var(--accent);color:var(--text);font-weight:700;box-shadow:0 0 0 3px var(--accent-soft);}
+.search-wrap{position:relative;flex:1;min-width:180px;}
+.search-wrap::before{
+  content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none;
+}
+input#search{
+  width:100%;padding:8px 12px 8px 32px;border-radius:20px;border:1px solid var(--border);
+  background:var(--bg-2);color:var(--text);font-size:.85rem;transition:border-color .15s ease, box-shadow .15s ease;
+}
+input#search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+input#search::placeholder{color:var(--muted);}
+.count{color:var(--muted);font-size:.8rem;margin:0 0 12px;font-weight:600;letter-spacing:.01em;}
+.country-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;
+  transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease; box-shadow:var(--shadow-sm);
+}
+.country-card:hover{border-color:var(--border-hi);transform:translateY(-1px);box-shadow:var(--shadow);}
+.country-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.country-head h3{margin:0;font-size:1.02rem;color:var(--text);font-weight:700;}
+.badges{display:flex;gap:6px;flex-wrap:wrap;}
+.badge{font-size:.7rem;font-weight:700;border-radius:20px;padding:4px 11px;letter-spacing:.01em;}
+.badge.region{background:var(--code-bg);color:var(--muted-soft);}
+.badge.tier-active{background:var(--tier-active-bg);color:var(--tier-active);}
+.badge.tier-test{background:var(--tier-test-bg);color:var(--tier-test);}
+.badge.tier-future{background:var(--tier-future-bg);color:var(--tier-future);}
+.badge.collab{background:var(--accent-soft);color:var(--accent-dim);border:1px solid var(--border-hi);}
+.country-body{display:grid;grid-template-columns:1fr;gap:12px;font-size:.88rem;padding-top:10px;border-top:1px solid var(--border);}
+@media(min-width:640px){.country-body{grid-template-columns:1fr 1fr;}}
+.field-label{font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+.field-label.risk{color:var(--tier-test);}
+.swot-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:640px){.swot-grid{grid-template-columns:1fr 1fr;}}
+.swot-box{border-radius:12px;padding:16px 18px;border:1px solid var(--border);position:relative;box-shadow:var(--shadow-sm);}
+.swot-box h3{margin:0 0 8px;font-size:.9rem;text-transform:uppercase;letter-spacing:.05em;font-weight:800;display:flex;align-items:center;gap:8px;}
+.swot-box p{margin:0;color:var(--muted-soft);}
+.swot-s{background:var(--tier-active-bg);}
+.swot-s h3{color:var(--tier-active);}
+.swot-w{background:var(--tier-test-bg);}
+.swot-w h3{color:var(--tier-test);}
+.swot-o{background:var(--accent-soft);border-color:var(--border-hi);}
+.swot-o h3{color:var(--accent-dim);}
+.swot-t{background:var(--tier-future-bg);}
+.swot-t h3{color:var(--tier-future);}
+.rec-group{margin-bottom:16px;padding:14px 16px;border-radius:10px;background:var(--bg-2);border:1px solid var(--border);}
+.rec-group h3{display:flex;align-items:center;gap:9px;margin:0 0 8px;font-size:.92rem;font-weight:700;color:var(--text);}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+.dot.active{background:var(--tier-active);}
+.dot.test{background:var(--tier-test);}
+.dot.future{background:var(--tier-future);}
+.rec-countries{font-size:.92rem;color:var(--text);margin:0 0 6px;font-weight:700;letter-spacing:.005em;}
+footer{color:var(--muted);font-size:.78rem;text-align:center;margin-top:28px;padding-top:16px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<header class="top wrap" style="padding-left:0;padding-right:0;">
+  <span class="eyebrow">People Operations</span>
+  <h1>International Hiring Framework</h1>
+  <p class="sub">A working tool for deciding where 80,000 Hours can — and should — hire outside the UK.</p>
+</header>
+<div class="wrap" style="padding-top:0;">
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="problem" class="active">Problem</button>
+    <button data-tab="framework">Framework</button>
+    <button data-tab="countries">Countries</button>
+    <button data-tab="swot">SWOT &amp; Recommendations</button>
+  </nav>
+
+  <section class="panel active" id="panel-problem">
+    <div class="card">
+      <h2>Explanation of the problem</h2>
+      <p>80,000 Hours wants to widen its hiring beyond the UK, but country decisions have historically been made ad hoc. The relevant question is therefore not simply whether Deel can employ someone in a country, but whether hiring there creates a reasonable balance between talent access, mission alignment, collaboration, cost, and operational risk.</p>
+      <p>This matters because 80,000 Hours is a small, growing organisation: additional employment complexity has a real opportunity cost for the People team, while restricting recruitment geographically could unnecessarily exclude strong candidates.</p>
+      <p>The framework separates three distinct questions: <strong>whether we can hire somewhere</strong>, <strong>whether it's worth actively recruiting there</strong>, and <strong>whether an individual candidate can work successfully from there</strong>.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-framework">
+    <div class="card layer-1">
+      <span class="layer-tag"><span class="num">1</span>Hard constraints</span>
+      <h2>Can we hire there at all?</h2>
+      <p>A country should pass four minimum tests. Failure on any one means we generally should not hire there unless we can identify a concrete mitigation.</p>
+      <ul>
+        <li><strong>Deel availability</strong> — Deel can employ staff there.</li>
+        <li><strong>Regulatory feasibility</strong> — no legal or regulatory barrier makes employment impractical.</li>
+        <li><strong>Operational feasibility</strong> — sufficiently low compliance, payroll, benefits, tax, and People Ops overhead.</li>
+        <li><strong>Remote-work MVP</strong> — candidates can reliably perform the job with their own computer and access to sufficiently stable electricity, connectivity, and other essential infrastructure.</li>
+      </ul>
+    </div>
+    <div class="card layer-2">
+      <span class="layer-tag"><span class="num">2</span>Soft filters</span>
+      <h2>Is it worth actively recruiting there?</h2>
+      <p>For countries passing Layer 1, assess whether additional recruiting effort is justified. These are search heuristics, not requirements — the absence of a visible EA community should never exclude a country.</p>
+      <ul>
+        <li><strong>Talent and mission alignment</strong> — evidence of EA, AI-safety, social-impact, university, or adjacent communities, alongside a sufficiently large pool of educated, English-speaking professionals.</li>
+        <li><strong>Collaboration</strong> — ideally 4–5 hours of overlap with UK working hours, treated as a meaningful cost rather than an absolute barrier, particularly where work can be asynchronous.</li>
+      </ul>
+      <p><strong>Key question:</strong> does this country materially expand our probability of finding an excellent candidate relative to the recruiting and coordination costs?</p>
+    </div>
+    <div class="card layer-3">
+      <span class="layer-tag"><span class="num">3</span>Individual candidate checks</span>
+      <h2>Can this specific person work successfully from there?</h2>
+      <p>Country-level assessment should never substitute for candidate-level assessment — it mitigates country-level risk rather than excluding candidates based on national averages. Mission-alignment itself is always assessed here, at the individual level, regardless of what Layer 2 showed for the country.</p>
+      <ul>
+        <li>English and written/async communication</li>
+        <li>Ability to work independently and reliably</li>
+        <li>Actual internet/electricity reliability and backup arrangements</li>
+        <li>Suitable hardware and workspace</li>
+        <li>Sustainable working hours</li>
+        <li>Security/privacy requirements</li>
+        <li>Expected compensation and total employment cost</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-countries">
+    <div class="controls" id="regionChips"></div>
+    <div class="controls">
+      <input type="text" id="search" placeholder="Search country, benefit, or risk…">
+    </div>
+    <div class="controls" id="tierChips"></div>
+    <p class="count" id="resultCount"></p>
+    <div id="countryList"></div>
+  </section>
+
+  <section class="panel" id="panel-swot">
+    <div class="card">
+      <h2>General costs and benefits (SWOT)</h2>
+      <div class="swot-grid">
+        <div class="swot-box swot-s"><h3>↑ Strengths</h3><p>Larger talent pool; greater mission-aligned talent access; potential compensation efficiency; geographic diversification; reduced dependence on European labour markets.</p></div>
+        <div class="swot-box swot-w"><h3>↓ Weaknesses</h3><p>More People Ops complexity; recruitment/screening costs; timezone friction; variable infrastructure; greater compensation benchmarking complexity.</p></div>
+        <div class="swot-box swot-o"><h3>◇ Opportunities</h3><p>Build repeatable international hiring pipelines; learn which countries produce strong hires; develop more asynchronous ways of working; access emerging AI-safety ecosystems.</p></div>
+        <div class="swot-box swot-t"><h3>! Threats</h3><p>Employment-law changes; FX volatility; connectivity/power disruption; coordination costs; overestimating the depth of a mission-aligned talent pool based on a small community.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Recommended countries for the future</h2>
+      <p>If a main goal is to prevent geography from being a barrier, we distinguish countries where we should <strong>actively source</strong> from countries where we should simply be <strong>comfortable hiring</strong> an excellent candidate if one turns up.</p>
+      <div class="rec-group">
+        <h3><span class="dot active"></span>Active recruiting now</h3>
+        <p class="rec-countries">France · Germany · Netherlands · Argentina · Brazil · South Africa</p>
+      </div>
+      <div class="rec-group">
+        <h3><span class="dot test"></span>Promising — treat as a test</h3>
+        <p class="rec-countries">Chile · Nigeria · Kenya</p>
+      </div>
+      <div class="rec-group">
+        <h3><span class="dot future"></span>Future — once async infrastructure matures</h3>
+        <p class="rec-countries">India · Philippines · Singapore · Australia · New Zealand</p>
+        <p>Our existing experience hiring in North America is a useful pilot for testing collaboration across larger time differences.</p>
+      </div>
+      <p>The longer-term goal is to expand the search wherever the marginal talent-access benefit exceeds the additional operational and collaboration cost, rather than establishing permanent geographic exclusions.</p>
+    </div>
+  </section>
+
+  <footer>Internal working tool — People Operations · 80,000 Hours</footer>
+</div>
+
+<script>
+const countries = [
+{region:"Europe", country:"France", tier:"active", collab:"Excellent",
+ benefits:"Large educated talent pool; established EA community; strong universities and international institutions; excellent UK overlap.",
+ risks:"Higher compensation; relatively complex employment framework; English proficiency varies outside international/professional environments."},
+{region:"Europe", country:"Germany", tier:"active", collab:"Excellent",
+ benefits:"Large talent pool; strong EA ecosystem; universities and technical talent; mature infrastructure; excellent UK overlap.",
+ risks:"Higher compensation and employment costs; competitive market for specialist talent; employment-law complexity."},
+{region:"Europe", country:"Netherlands", tier:"active", collab:"Excellent",
+ benefits:"Strong English proficiency; EA/AI-safety ecosystem; international workforce; excellent infrastructure and UK overlap.",
+ risks:"High compensation and housing costs; smaller absolute talent pool than Germany."},
+{region:"Latin America", country:"Argentina", tier:"active", collab:"Excellent",
+ benefits:"Strong EA/AI-safety ecosystem; large educated talent pool; strong international remote-work culture; potentially attractive compensation/value ratio.",
+ risks:"Inflation, FX volatility and changing compensation expectations; need deliberate compensation policy."},
+{region:"Latin America", country:"Brazil", tier:"active", collab:"Excellent",
+ benefits:"Very large talent pool; universities and technology sector; growing EA/AI-safety ecosystem; scalable recruitment market.",
+ risks:"Employment/payroll complexity; English narrows effective pool; regional variation in infrastructure."},
+{region:"Latin America", country:"Chile", tier:"test", collab:"Excellent",
+ benefits:"Strong universities; good infrastructure; growing AI-safety/EA activity; relatively predictable operating environment.",
+ risks:"Smaller talent pool; less obvious scalability; English proficiency less universal."},
+{region:"Africa", country:"South Africa", tier:"active", collab:"Very good",
+ benefits:"English-speaking; strong EA/AI-safety infrastructure; universities and technical talent; good UK overlap; potentially strong compensation efficiency.",
+ risks:"Electricity reliability/loadshedding; infrastructure varies; socioeconomic inequality makes national averages poor proxies for candidates."},
+{region:"Africa", country:"Nigeria", tier:"test", collab:"Very good",
+ benefits:"Large young professional population; English-speaking; technology ecosystem; growing EA/AI-safety community; good UK overlap.",
+ risks:"Electricity/connectivity reliability; FX volatility; thinner direct AI-safety talent pool."},
+{region:"Africa", country:"Kenya", tier:"test", collab:"Very good",
+ benefits:"English-speaking; Nairobi technology ecosystem; growing EA/AI-safety activity; good UK overlap; potentially competitive compensation.",
+ risks:"Smaller specialist pool; infrastructure variability; developing mission-aligned ecosystem."},
+{region:"Asia", country:"India", tier:"future", collab:"Limited",
+ benefits:"Very large educated/technical talent pool; substantial EA/AI-safety ecosystem; English-speaking professional workforce; potentially strong value.",
+ risks:"Limited UK overlap; screening costs in a huge labour market; exceptional technical talent may command global salaries."},
+{region:"Asia", country:"Philippines", tier:"future", collab:"Limited",
+ benefits:"Large international remote-work workforce; strong English; extensive experience working for overseas organisations; potentially strong cost efficiency.",
+ risks:"Limited UK overlap; weaker EA/AI-safety pipeline; infrastructure varies."},
+{region:"Asia", country:"Singapore", tier:"future", collab:"Limited",
+ benefits:"Strong AI governance/safety ecosystem; excellent English and infrastructure; high-quality technical and policy talent.",
+ risks:"High compensation and cost of living; poor UK overlap; relatively small labour market."},
+{region:"Oceania", country:"Australia", tier:"future", collab:"Poor",
+ benefits:"Strong EA/AI-safety ecosystem; high-quality universities and technical talent; English; excellent infrastructure.",
+ risks:"High compensation; significant timezone friction; distance from UK increases coordination costs."},
+{region:"Oceania", country:"New Zealand", tier:"future", collab:"Poor",
+ benefits:"English-speaking; strong infrastructure; EA/AI-safety activity; potentially useful specialist talent.",
+ risks:"Small talent pool; high compensation relative to many alternatives; significant timezone friction."}
+];
+
+const tierLabel = {active:"Active recruiting", test:"Promising — test", future:"Future (async)"};
+const regions = ["All", ...new Set(countries.map(c=>c.region))];
+const tiers = ["All tiers", "active", "test", "future"];
+
+let activeRegion = "All";
+let activeTier = "All tiers";
+let query = "";
+
+function renderChips(){
+  const rc = document.getElementById("regionChips");
+  rc.innerHTML = "";
+  regions.forEach(r=>{
+    const b = document.createElement("button");
+    b.className = "chip" + (r===activeRegion ? " active":"");
+    b.textContent = r;
+    b.onclick = ()=>{ activeRegion = r; renderChips(); renderTierChips(); renderList(); };
+    rc.appendChild(b);
+  });
+}
+function renderTierChips(){
+  const tc = document.getElementById("tierChips");
+  tc.innerHTML = "";
+  tiers.forEach(t=>{
+    const b = document.createElement("button");
+    b.className = "chip" + (t===activeTier ? " active":"");
+    b.textContent = t==="All tiers" ? t : tierLabel[t];
+    b.onclick = ()=>{ activeTier = t; renderTierChips(); renderList(); };
+    tc.appendChild(b);
+  });
+}
+function renderList(){
+  const q = query.trim().toLowerCase();
+  const filtered = countries.filter(c=>{
+    if(activeRegion!=="All" && c.region!==activeRegion) return false;
+    if(activeTier!=="All tiers" && c.tier!==activeTier) return false;
+    if(q && !(c.country.toLowerCase().includes(q) || c.benefits.toLowerCase().includes(q) || c.risks.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  document.getElementById("resultCount").textContent = filtered.length + " countr" + (filtered.length===1?"y":"ies") + " shown";
+  const list = document.getElementById("countryList");
+  list.innerHTML = "";
+  filtered.forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "country-card";
+    el.innerHTML = `
+      <div class="country-head">
+        <h3>${c.country}</h3>
+        <div class="badges">
+          <span class="badge region">${c.region}</span>
+          <span class="badge tier-${c.tier}">${tierLabel[c.tier]}</span>
+          <span class="badge collab">Collaboration: ${c.collab}</span>
+        </div>
+      </div>
+      <div class="country-body">
+        <div><div class="field-label">Potential benefits / value</div><div>${c.benefits}</div></div>
+        <div><div class="field-label risk">Main costs &amp; risks</div><div>${c.risks}</div></div>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+document.getElementById("search").addEventListener("input", e=>{ query = e.target.value; renderList(); });
+renderChips(); renderTierChips(); renderList();
+
+document.querySelectorAll("#tabs button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll("#tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section.panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+    window.scrollTo({top:0,behavior:"instant"});
+  });
+});
+</script>
+</body>
+</html>
